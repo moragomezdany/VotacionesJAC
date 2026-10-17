@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Participa en las votaciones de tu Junta de Acción Comunal.">
+    <title>Votaciones JAC</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="encabezado">
+        <div class="logo-jac" aria-hidden="true">JAC</div>
+        <div>
+            <p class="sobretitulo">Participación comunitaria</p>
+            <h1>Votaciones JAC</h1>
+            <p class="subtitulo">Tu opinión ayuda a construir un mejor barrio</p>
+        </div>
+    </header>
+
+    <!-- PANTALLA 1: LOGIN -->
+<main>
+<section id="seccionLogin" class="panel">
+    <div class="icono-seccion" aria-hidden="true">👋</div>
+    <h2>Ingresa al sistema</h2>
+    <p class="texto-ayuda">Usa tus datos de vecino para participar. Las cuentas autorizadas de observación acceden a un panel de solo lectura.</p>
+    <form id="formLogin">
+        <label for="inputCorreo">Correo electrónico</label>
+        <input type="email" id="inputCorreo" placeholder="nombre@correo.com"
+            autocomplete="username" maxlength="254" required>
+        <label for="inputClave">Contraseña</label>
+        <input type="password" id="inputClave" placeholder="Ingresa tu contraseña"
+            autocomplete="current-password" required>
+
+        <button class="btn-principal" type="submit">Ingresar con correo <span aria-hidden="true">→</span></button>
+        <button id="btnRestablecerClave" class="btn-enlace" type="button">¿Olvidaste tu contraseña?</button>
+        <p id="msjErrorLogin" role="status" aria-live="polite" aria-atomic="true"></p>
+    </form>
+</section>
+
+<section id="panelSeguimiento" class="panel panel-seguimiento" hidden aria-labelledby="tituloSeguimiento">
+    <div class="encabezado-seguimiento">
+        <div class="titulo-panel-seguimiento">
+            <p class="sobretitulo">Acceso de solo lectura</p>
+            <h2 id="tituloSeguimiento">Resultados en tiempo real</h2>
+            <p class="texto-ayuda">Seguimiento agregado de la votación. No se muestran datos personales ni votos individuales.</p>
+        </div>
+        <div class="estado-jornada">
+            <span id="estadoJornada" class="etiqueta-activa">● Votación activa</span>
+            <button id="btnCerrarSesionSeguimiento" class="btn-secundario" type="button">Cerrar sesión</button>
+        </div>
+    </div>
+
+    <div class="graficas-seguimiento">
+        <article class="tarjeta-grafica tarjeta-grafica-barras">
+            <h3>Gráfico de barras<br>Votos por propuesta</h3>
+            <p class="subtitulo-grafica">Distribución de los votos registrados</p>
+            <div id="graficaBarras" class="grafica-barras" role="list" aria-label="Votos por propuesta"></div>
+        </article>
+        <article class="tarjeta-grafica tarjeta-grafica-dona">
+            <h3>Gráfico de dona de<br>participación ciudadana</h3>
+            <div id="graficaDona" class="grafica-dona" role="img" aria-label="Participación de vecinos registrados"></div>
+            <div class="leyenda-dona" aria-live="polite">
+                <span><i class="indicador indicador-participantes" aria-hidden="true"></i>Participantes <strong id="totalParticipantes">0</strong></span>
+                <span><i class="indicador indicador-pendientes" aria-hidden="true"></i>Pendientes <strong id="totalPendientes">0</strong></span>
+            </div>
+            <p id="resumenParticipacion" class="resumen-participacion">0 de 0 vecinos registrados</p>
+        </article>
+        <article class="tarjeta-grafica tarjeta-grafica-linea">
+            <h3>Gráfico de línea de<br>participación por horas</h3>
+            <p class="subtitulo-grafica">Votos registrados por hora · últimas 24 horas</p>
+            <div id="graficaLinea" class="grafica-linea" role="img" aria-label="Historial de votos por hora"></div>
+            <p id="estadoHistorial" class="estado-historial"></p>
+        </article>
+    </div>
+
+    <div class="pie-seguimiento">
+        <div class="botones-reporte">
+            <button id="btnActualizarSeguimiento" class="btn-secundario" type="button">
+                <span aria-hidden="true">↻</span> Actualizar
+            </button>
+            <button id="btnDescargarResultados" class="btn-secundario" type="button">
+                <span aria-hidden="true">⇩</span> Descargar CSV
+            </button>
+            <button id="btnImprimirResultados" class="btn-descargar-pdf" type="button">
+                <span aria-hidden="true">⇩</span> Descargar informe PDF
+            </button>
+        </div>
+        <p class="actualizacion-seguimiento">Última actualización: <time id="actualizadoSeguimiento">Pendiente</time></p>
+    </div>
+    <p id="estadoSeguimiento" class="estado-seguimiento" role="status" aria-live="polite"></p>
+</section>
+
+<!-- PANTALLA 2: VOTACIÓN (Oculta por CSS al inicio) -->
+<section id="seccionVotacion" class="panel panel-votacion" hidden>
+    <div class="encabezado-votacion">
+        <div>
+            <p class="sobretitulo">Votación abierta</p>
+            <h2>Hola, <span id="nombreVecino"></span> 👋</h2>
+        </div>
+        <div class="acciones-sesion">
+            <div class="estado-votacion">
+                <span class="etiqueta-activa"><span aria-hidden="true">●</span> Activa</span>
+                <span class="fecha-cierre">
+                    <span>Fecha de cierre</span>
+                    <time datetime="2026-10-30T18:00:00-05:00">30 de octubre de 2026, 18:00 hrs. (Colombia)</time>
+                </span>
+            </div>
+            <button id="btnCerrarSesion" class="btn-secundario" type="button">Cerrar sesión</button>
+        </div>
+    </div>
+    <div id="vistaSeleccion">
+        <p class="texto-ayuda">Lee las opciones y selecciona la propuesta que deseas apoyar para tu barrio.</p>
+        <p id="msjEstadoVoto" class="estado-voto" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+        <div id="contenedorPropuestas"></div>
+    </div>
+    <section id="panelResultados" class="panel-resultados" aria-live="polite" hidden>
+        <div class="confirmacion-voto">
+            <span class="icono-confirmacion" aria-hidden="true">✓</span>
+            <div>
+                <p class="sobretitulo">Participación registrada</p>
+                <h2>Tu voto ya fue registrado</h2>
+                <p class="texto-ayuda">Gracias por participar. Puedes consultar los resultados actuales.</p>
+            </div>
+        </div>
+        <div id="contenedorResultados" class="lista-resultados"></div>
+    </section>
+</section>
+</main>
+<footer class="pie-pagina">
+    <p class="pie-mensaje">Junta de Acción Comunal · Participación que transforma</p>
+    <nav class="enlaces-footer" aria-label="Información y soporte">
+        <a href="#terminos" data-panel-legal="terminos">Términos de participación</a>
+        <a href="#privacidad" data-panel-legal="privacidad">Privacidad</a>
+        <a href="mailto:moragomezdany@gmail.com">Soporte técnico</a>
+        <a href="tel:+573007261941">300 726 4191</a>
+    </nav>
+    <details class="aviso-legal" id="terminos">
+        <summary>Términos de participación</summary>
+        <p>El contenido oficial de los términos de participación está pendiente de publicación por la JAC.</p>
+    </details>
+    <details class="aviso-legal" id="privacidad">
+        <summary>Privacidad</summary>
+        <p>El aviso oficial de privacidad está pendiente de publicación por la JAC.</p>
+    </details>
+</footer>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

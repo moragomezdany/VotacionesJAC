@@ -1,0 +1,22 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /propuestas/{propuestaId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    match /usuarios/{usuarioId} {
+      allow read, write: if false;
+    }
+
+    match /authRateLimits/{attemptId} {
+      allow read, write: if false;
+    }
+
+    match /{documento=**} {
+      allow read, write: if false;
+    }
+  }
+}
